@@ -10,20 +10,20 @@ LDFLAGS =
 SRC = src
 BUILD = build
 
-SRCS = $(shell find $(SRC_DIR) -type f -name '*.cc')
+SRCS = $(shell find $(SRC) -type f -name '*.cc')
 OBJS = $(patsubst $(SRC)/%.cc, $(BUILD)/%.o, $(SRCS))
 
 all: $(TARGET)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
+$(BUILD)/%.o: $(SRC)/%.cc | $(BUILD)
 	$(CPP) $(CPP_FLAGS) -c $< -o $@
 
 $(TARGET): $(OBJS)
 	$(CPP) $(LDFLAGS) $^ -o $@
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+$(BUILD):
+	mkdir -p $(BUILD)
 
 .PHONY: all clean
 clean:
-	rm -rf $(BUILD_DIR) $(TARGET)
+	rm -rf $(BUILD) $(TARGET)
