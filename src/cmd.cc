@@ -46,4 +46,9 @@ AntFlags::AntFlags(int argc, char** argv) {
         CommandPaths d(sub);
         files.push_back(d);
     }
+
+    if(files.empty()) {
+        CommandPaths d("");
+        files.push_back(d);
+    }
 }
