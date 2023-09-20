@@ -4,17 +4,52 @@
 #include <unistd.h>
 #include "screen.hh"
 
-Cursor::Cursor(enum CursorMode m) : mode{m} {
-    fprintf(stdout, "\033[%d;%dH", 1, 1);
-    fflush(stdout);
-    x_pos = 1;
-    y_pos = 1;
+Cursor::Cursor(enum CursorMode m) : mode{m} {}
+
+void Cursor::setCursor(enum CursorMode m) {
+    switch(m) {
+    case DEFAULT:
+        std::cout << "\033[0 q";
+        break;
+    case INVISIBLE:
+        std::cout << "\033[?25l";
+        break;
+    case BLINK_BAR:
+        std::cout << "\033[5 q";
+        break;
+    case BLINK:
+        std::cout << "\033[1 q";
+        break;
+    }
 }
+
+// Does no bounds check
+void Cursor::setPos(unsigned short x_pos, unsigned short y_pos) {
+    this->x_pos = x_pos;
+    this->y_pos = y_pos;
+
+    fprintf(stdout, "\033[%d;%df", y_pos, x_pos);
+}
+
+unsigned int Cursor::getPos() {
+    return (((unsigned int)x_pos << 16) | (unsigned int)y_pos);
+}
+
+CursorMode Cursor::getCursor() {
+    return mode;
+}
+
 
 void enableRawMode() {
   struct termios raw;
   tcgetattr(STDIN_FILENO, &raw);
-  raw.c_lflag &= ~(ECHO | ICANON);
+
+  raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+  raw.c_oflag &= ~(OPOST);
+  raw.c_cflag |= (CS8);
+  raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+  raw.c_cc[VMIN] = 0;
+
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
@@ -39,7 +74,9 @@ Terminal::~Terminal() {
 
 int Terminal::set_raw() {
     enableRawMode();
+    flush();
     term_mode = TermMode::RAW;
+
     return 0;
 }
 

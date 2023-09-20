@@ -15,7 +15,8 @@
 enum CursorMode {
     DEFAULT,
     INVISIBLE,
-    BLINK
+    BLINK,
+    BLINK_BAR
 };
 
 enum TermMode {
@@ -53,18 +54,18 @@ private:
     RelativeSize rs;
     PixSize ps; // TODO
 
-    Cursor* cursor;
     TermMode term_mode = TermMode::CANNONICAL;
 
     struct termios orig_termios;
 
+    static void flush();
     
 public:
+    Cursor* cursor;
+
     Terminal();
     int set_raw();
     int set_cannonical();
-
-    void flush();
 
     static void screen_alt();
     static void screen_main();

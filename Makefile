@@ -2,7 +2,7 @@ TARGET = ant2
 VERSION = 0.0.1
 
 CPP = clang++
-CPP_FLAGS = -O2 -g  -Wall -Wextra -std=c++20 -finline-functions
+CPP_FLAGS = -O2 -g  -Wall -Wextra -std=c++20 -finline-functions -I./src/config/
 CPP_LIBS = -lpthread -lncurses
 
 LDFLAGS = 
