@@ -1,13 +1,12 @@
 #pragma once
 
+#include <string>
+
 /* 
     Terminal should run in separate UI thread.
     Communicates with main editor thread through
     queue w/ mutex.
 */
-
-#include <utils/async_queue.hh>
-#include <pthread.h>
 
 enum class CURSOR_MODE {
     Block,
@@ -31,10 +30,10 @@ public:
     ~Terminal();
 
     void setCursorShape(CURSOR_MODE);
+    void update_size();
 
     // Redisplay and recapture screen size
     void init_screen();
 
-    // Capture screen inputs
-    void interface_loop(AsyncQueue<char>&);
+    void print_screen(std::string s);
 };

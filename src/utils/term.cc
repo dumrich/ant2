@@ -6,7 +6,7 @@
 Terminal::Terminal() {
     setCursorShape(CURSOR_MODE::Block);
     // Set terminal size
-    getmaxyx(stdscr, size.rows, size.cols);   
+    update_size();
 }
 
 Terminal::~Terminal() {
@@ -20,6 +20,10 @@ void Terminal::init_screen() {
     keypad(stdscr, TRUE);  // Enable special keys
     noecho();       // Don't display input characters
     curs_set(0);    // Hide the cursor
+}
+
+void Terminal::update_size() {
+    getmaxyx(stdscr, size.rows, size.cols);   
 }
 
 void Terminal::setCursorShape(CURSOR_MODE shape) {
@@ -40,15 +44,6 @@ void Terminal::setCursorShape(CURSOR_MODE shape) {
     }
 }
 
-void Terminal::interface_loop(AsyncQueue<char>& queue) {
-    char c;
-    while((c = getch())) {
-        // Resize window
-        getmaxyx(stdscr, size.rows, size.cols);
-
-        // Returned quit code. Only way to fail.
-        if(!queue.push(c)) {
-            break;
-        }
-    }
+void Terminal::print_screen(std::string s) {
+    printw(s.c_str());
 }
