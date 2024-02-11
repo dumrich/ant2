@@ -1,7 +1,30 @@
 #include "gapbuf.hh"
 #include <cstdlib> // access to realloc 
 #include <iostream>
+#include <fstream>
 #include <cstring>
+
+template <typename T> 
+GapBuffer<T>::~GapBuffer() {
+    free(buf);
+}
+
+template <typename T> 
+GapBuffer<T>::GapBuffer(fs::path file) {
+    std::ifstream inputFile(file, std::ios::binary);
+
+    if(inputFile.is_open()) {
+        // Get filesize
+        inputFile.seekg(0, std::ios::end);
+        std::streampos fileSize = inputFile.tellg();
+        inputFile.seekg(0, std::ios::beg);
+
+        buf = (T*)std::calloc(fileSize + GAP_SIZE, sizeof(T));
+        inputFile.read(buf, fileSize);
+    } else {
+        buf = nullptr;
+    }
+}
 
 template <typename T> 
 GapBuffer<T>::GapBuffer() {

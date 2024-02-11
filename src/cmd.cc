@@ -26,7 +26,7 @@ AntFlags::AntFlags(int argc, char** argv) {
     for(int index = optind; index < argc; index++) {
         fs::path file_arg = argv[index];
         if(!file_arg.empty()) {
-            CommandPaths p(file_arg);
+            CommandPath p(file_arg);
             files.push_back(p);
         }
     }
@@ -36,7 +36,7 @@ AntFlags::AntFlags(int argc, char** argv) {
     // Parse file comma separated file list
     while((end = cmd_files.find(",", start)) != std::string::npos) {
         fs::path sub = cmd_files.substr(start, end - start);
-        CommandPaths d(sub);
+        CommandPath d(sub);
         files.push_back(d);
         start = end + 1;
     }
@@ -44,16 +44,16 @@ AntFlags::AntFlags(int argc, char** argv) {
     if(start < cmd_files.size()) {
         // final token
         fs::path sub = cmd_files.substr(start, cmd_files.size() - start);
-        CommandPaths d(sub);
+        CommandPath d(sub);
         files.push_back(d);
     }
 
     if(files.empty()) {
-        CommandPaths d("");
+        CommandPath d("");
         files.push_back(d);
     }
 }
 
-std::vector<CommandPaths> AntFlags::getFiles() {
+std::vector<CommandPath> AntFlags::getFiles() {
     return files;
 }

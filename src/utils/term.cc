@@ -11,7 +11,6 @@ Terminal::Terminal() {
 
 Terminal::~Terminal() {
     endwin();
-
 }
 
 void Terminal::init_screen() {
@@ -39,6 +38,9 @@ void Terminal::setCursorShape(CURSOR_MODE shape) {
             std::cout << "\e[6 q";  // Escape sequence for line cursor
             break;
         case CURSOR_MODE::BlinkingBlock:
+            std::cout << "\e[2 q";  // Escape sequence for blinking block cursor
+            break;
+        case CURSOR_MODE::None:
             std::cout << "\e[2 q";  // Escape sequence for blinking block cursor
             break;
     }

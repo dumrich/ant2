@@ -2,6 +2,9 @@
 
 #include <cstddef>
 #include <iostream>
+#include <filesystem>
+
+using fs = std::filesystem;
 
 #define GAP_SIZE 10
 
@@ -17,6 +20,8 @@ private:
     T* expand_gap();
 public:
     GapBuffer();
+    ~GapBuffer();
+    GapBuffer(fs::path p);
 
     // Core Actions
     void appendCharacter(T c);

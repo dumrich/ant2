@@ -5,9 +5,8 @@
 #include <cmd.hh>
 
 int main(int argc, char** argv) {
-    // AntFlags f(argc, argv);
-    // auto files = f.getFiles();
-    Editor<char> e;
+    AntFlags f(argc, argv);
+    Editor<char> e(f.getFiles());
 
     e.setup_interface(); // Initialize terminal, buffers, and collect input
 
